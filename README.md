@@ -28,8 +28,9 @@ Screenshots and JS-heavy pages need a renderer, set by `fetch.renderer` in `conf
 
 | `fetch.renderer` | What it does | Needs |
 |---|---|---|
-| `zenrows` (configured) | [ZenRows](https://www.zenrows.com) API takes the full-page screenshot and renders JS-heavy pages. | `ZENROWS_API_KEY` in `.env`. 5 credits per screenshot or render; capped per run by `fetch.zenrows.max_credits`. |
+| `playwright` + `browser_channel: chrome` (configured) | Your installed Google Chrome, headless. Nothing to download, free, stays on your machine. | Chrome at its standard location (`C:\Program Files\Google\Chrome\Application\chrome.exe`). |
 | `playwright` + `browser_channel: msedge` | Local headless Microsoft Edge (installed on every Windows 10/11). Nothing to download, free. | Nothing. |
+| `zenrows` | [ZenRows](https://www.zenrows.com) API takes the full-page screenshot and renders JS-heavy pages. | `ZENROWS_API_KEY` in `.env`. 5 credits per screenshot or render; capped per run by `fetch.zenrows.max_credits`. |
 | `playwright` + `browser_channel: ""` | Playwright's own Chromium. | `playwright install chromium` (large download; it can time out behind some networks). |
 | `none` | No screenshots; static HTML only. | Nothing. |
 
@@ -49,8 +50,9 @@ BRAVE_API_KEY=...       # https://api.search.brave.com  (1 request per results p
 ZENROWS_API_KEY=...     # https://www.zenrows.com  (only when fetch.renderer: zenrows)
 ```
 
-ZenRows is used for rendering only, not search: its documented API fetches pages; it isn't a
-search-results API. Searches go through SerpAPI and/or Brave.
+Only the keys for what you use are needed. The current `config.yaml` searches with **Brave**
+(`search.providers: [brave]`), so `BRAVE_API_KEY` is enough. ZenRows is used for rendering only,
+not search: its documented API fetches pages; it isn't a search-results API.
 
 `.env` is git-ignored. Keys are never written to logs, cache files or reports. They're redacted
 if they ever appear in a log message.
@@ -78,13 +80,14 @@ message if one is missing.
 footprint-scanner queries --tracker Footprint_Removal_Tracker.xlsx
 
 # 2. Dry run: queries + worst-case API cost, minus what's already cached. Spends nothing.
-footprint-scanner scan --tracker Footprint_Removal_Tracker.xlsx --dry-run --providers serpapi,brave
+footprint-scanner scan --tracker Footprint_Removal_Tracker.xlsx --dry-run
 
-# 3. Real scan (small first run)
-footprint-scanner scan --tracker Footprint_Removal_Tracker.xlsx --max-queries 10
+# 3. Real scan (small first run), with the providers from config.yaml (Brave)
+footprint-scanner scan --tracker Footprint_Removal_Tracker.xlsx --max-queries 5 --max-pages 5
 
-# Full scan with both providers merged
-footprint-scanner scan --tracker Footprint_Removal_Tracker.xlsx --providers serpapi,brave
+# Full scan; add SerpAPI too if you have a key (results are merged)
+footprint-scanner scan --tracker Footprint_Removal_Tracker.xlsx
+footprint-scanner scan --tracker Footprint_Removal_Tracker.xlsx --providers brave,serpapi
 
 # 4. Monthly re-scan of the latest reviewed copy
 footprint-scanner rescan --tracker clients/CASE-2026-001/Footprint_Removal_Tracker_2026-09-29_1430.xlsx
@@ -271,8 +274,10 @@ is git-ignored.
     with `enrich.wayback: false`.
   - **ZenRows** (only with `fetch.renderer: zenrows`): receives the URL of each robots-allowed page
     to screenshot or render, and returns the image/HTML. It doesn't receive the client's other
-    identifiers. Use `renderer: playwright` with `browser_channel: msedge` to keep rendering
-    entirely on your machine.
+    identifiers. With `renderer: playwright` and `browser_channel: chrome` or `msedge` (the current
+    setting is `chrome`), rendering stays entirely on your machine.
+  - **Customer reports** (`docx` / `pdf`) are created locally and sent nowhere. Share them only
+    with the client.
 - **Delete everything for a client** (cached API responses, evidence, run reports/logs and tracker
   copies in the client folder):
 
@@ -313,8 +318,13 @@ pytest -q           # all network calls are mocked
 Tests cover query generation (Turkish transliteration, phone formats), TC Kimlik/IBAN checksums,
 URL normalization, mention counting and data-type detection, classification rules, search
 pagination/backoff/cache/budget, polite fetching, the Excel round-trip (formulas, validations and
-conditional formatting preserved), re-scan merge rules, an end-to-end scan → review → rescan, and
-the CLI authorization gate and `purge`.
+conditional formatting preserved, including dropdowns Excel saves in its extended format), re-scan
+merge rules, an end-to-end scan → review → rescan, the ZenRows renderer, the customer Word/PDF
+reports (item selection, ID numbering, links, form fields), and the CLI authorization gate and
+`purge`. Tests use `tests/fixtures/tracker_template.xlsx`, a clean template with fictional sample
+data only. Never point tests at a live client tracker.
+
+See [CHANGELOG.md](CHANGELOG.md) for what changed and when.
 
 
 
