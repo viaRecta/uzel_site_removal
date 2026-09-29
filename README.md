@@ -315,3 +315,9 @@ URL normalization, mention counting and data-type detection, classification rule
 pagination/backoff/cache/budget, polite fetching, the Excel round-trip (formulas, validations and
 conditional formatting preserved), re-scan merge rules, an end-to-end scan → review → rescan, and
 the CLI authorization gate and `purge`.
+
+
+
+
+
+footprint-scanner docx --tracker clients/CASE-2026-001/Footprint_Removal_Tracker_2026-09-29_1448.xlsx --lang tr --prepared-by "Vias Yazılım"
