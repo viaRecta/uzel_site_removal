@@ -1,0 +1,63 @@
+# footprint-scanner configuration. API keys go in .env, never here.
+
+search:
+  # Backends to query: serpapi, brave, or both (results are merged).
+  providers: [brave]
+  max_results_per_query: 20      # results fetched per query per provider (pages as needed)
+  request_delay: 1.0             # seconds between API calls
+  max_api_calls: 150             # per-run credit budget (1 call = 1 results page); cache hits are free
+  max_retries: 5                 # on 429 / 5xx, with exponential backoff
+  backoff_base: 2.0
+  timeout: 30
+  site_query_mode: grouped       # grouped: "name" (site:a OR site:b ...)  |  per_domain: one query per site
+  site_group_size: 8
+  serpapi:
+    engine: google
+    google_domain: google.com.tr
+    gl: tr
+    hl: tr
+  brave:
+    country: TR
+    search_lang: tr
+
+fetch:
+  # Identify yourself honestly; put a contact address here.
+  user_agent: "footprint-scanner/0.1 (privacy footprint audit on behalf of the data subject; contact: onur@viarecta.com)"
+  #user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  max_pages: 200                 # pages fetched per run; the rest are analyzed from search snippets
+  concurrency: 4                 # simultaneous page fetches (different domains)
+  per_domain_delay: 3.0          # seconds between requests to the same host
+  timeout: 20
+  screenshots: true              # full-page PNG into <client>/evidence/
+  # Who takes screenshots and renders JS-heavy pages:
+  #   zenrows    - ZenRows API (needs ZENROWS_API_KEY; 5 credits per screenshot / render; the page URL is sent to ZenRows)
+  #   playwright - local browser (see browser_channel)
+  #   none       - no screenshots, static HTML only
+  # Plain HTML is always fetched directly from the site, and robots.txt is always respected.
+  renderer: playwright
+  browser_channel: chrome        # playwright only: chrome / msedge = installed browser, "" = Playwright's Chromium
+  playwright_timeout: 30
+  js_text_threshold: 400         # re-render with Playwright if static HTML has less visible text
+  max_bytes: 5000000
+  zenrows:
+    max_credits: 1000            # per-run ZenRows credit cap (a screenshot = 5, a rendered HTML fetch = 5)
+    timeout: 180                 # seconds; ZenRows recommends >= 3 minutes for JS rendering
+    wait_ms: 0                   # extra wait after load before capture, if pages render slowly
+
+enrich:
+  rdap: true                     # registrant org/country + hosting country (sends domain names / IPs to rdap.org)
+  wayback: true                  # Wayback Machine availability (sends the found URL to archive.org)
+  imprint_lookup: true           # fetch the site's own about/imprint page if the owner is unknown
+  timeout: 15
+
+report:
+  # Customer PDF (footprint-scanner pdf)
+  prepared_by: ""                # your company / name for the cover page
+  lang: en                       # en or tr
+  font: ""                       # .ttf covering Turkish characters; empty = auto (Arial on Windows)
+  font_bold: ""
+
+paths:
+  clients_dir: clients           # per-client data: clients/<CASE-ID>/{cache,evidence,runs,tracker copies}
+  brokers_file: brokers.yaml
+  categories_file: domain_categories.yaml

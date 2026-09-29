@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.env
+# Client data is sensitive: never commit it.
+clients/
+logs/
+Footprint_Removal_Tracker_*.xlsx
+client.yaml

@@ -1,0 +1,50 @@
+# Domain -> Site Category mapping. Category names MUST match the Lists sheet exactly
+# (the scanner validates them at startup). Subdomains match automatically.
+# Data brokers live in brokers.yaml.
+
+# Domains searched with site: queries (in addition to brokers.yaml).
+site_queries:
+  social: [facebook.com, instagram.com, x.com, twitter.com, tiktok.com, youtube.com, reddit.com, pinterest.com, threads.net, eksisozluk.com]
+  professional: [linkedin.com, github.com, kariyer.net, xing.com, researchgate.net, academia.edu, behance.net]
+
+categories:
+  "Social media":
+    [facebook.com, instagram.com, x.com, twitter.com, tiktok.com, pinterest.com, threads.net, vk.com,
+     tumblr.com, snapchat.com, t.me, telegram.me, ask.fm, bsky.app, mastodon.social]
+  "Professional network":
+    [linkedin.com, xing.com, kariyer.net, github.com, gitlab.com, researchgate.net, academia.edu,
+     behance.net, dribbble.com, secretcv.com, yenibiris.com, orcid.org, scholar.google.com]
+  "Image / video host":
+    [youtube.com, youtu.be, vimeo.com, dailymotion.com, flickr.com, imgur.com, soundcloud.com, twitch.tv]
+  "Forum / community":
+    [reddit.com, eksisozluk.com, uludagsozluk.com, incisozluk.com.tr, quora.com, stackoverflow.com,
+     stackexchange.com, technopat.net, kizlarsoruyor.com, donanimhaber.com, r10.net]
+  "News / media":
+    [hurriyet.com.tr, milliyet.com.tr, sabah.com.tr, sozcu.com.tr, haberturk.com, ntv.com.tr, cnnturk.com,
+     cumhuriyet.com.tr, aa.com.tr, trthaber.com, yenisafak.com, star.com.tr, t24.com.tr, bianet.org,
+     dha.com.tr, iha.com.tr, ensonhaber.com, haberler.com, posta.com.tr, takvim.com.tr, gazeteduvar.com.tr,
+     bbc.com, bbc.co.uk, reuters.com, nytimes.com, theguardian.com, dw.com, euronews.com]
+  "Blog":
+    [medium.com, blogspot.com, wordpress.com, substack.com, blogger.com, wix.com, ghost.io, hashnode.dev]
+  "Business directory":
+    [bulurum.com, opencorporates.com, northdata.com, northdata.de, dnb.com, crunchbase.com, yellowpages.com,
+     firmasec.com, zaubacorp.com]
+  "Government / court record":
+    [resmigazete.gov.tr, ticaretsicil.gov.tr, turkiye.gov.tr, courtlistener.com, justia.com, pacer.gov]
+  "Archive / cache":
+    [archive.org, archive.ph, archive.today, archive.is, cachedview.nl]
+  "Review site":
+    [sikayetvar.com, trustpilot.com, yelp.com, tripadvisor.com, tripadvisor.com.tr, glassdoor.com]
+
+# Host suffixes that imply a category (checked after the explicit lists).
+suffix_rules:
+  "Government / court record": [".gov", ".gov.tr", ".gov.uk", ".mil", ".jus.br", ".adalet.gov.tr", ".bel.tr", ".edu.tr.gov"]
+
+# Keywords in the host or path (folded, lowercase) that suggest a category.
+keyword_rules:
+  "News / media": [haber, news, gazete, newspaper, magazin, dergi]
+  "Forum / community": [forum, sozluk, community, topluluk, "/thread", "/konu/", "/topic/"]
+  "Blog": [blog, "/post/", "/yazi/"]
+  "Business directory": [rehber, directory, firma, company-profile, sirket, "/companies/"]
+  "Review site": [review, sikayet, yorum, degerlendirme]
+  "Government / court record": [mahkeme, court, karar, "resmi-gazete"]

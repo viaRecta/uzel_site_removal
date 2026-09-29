@@ -1,0 +1,35 @@
+# Known data-broker / people-search domains.
+# Extend this list freely. Fields:
+#   domain       registered domain (subdomains match automatically)
+#   name         display name
+#   opt_out_url  the broker's own opt-out / suppression page, if known (VERIFY before use;
+#                brokers move these pages often). Leave empty if unknown.
+#   country      ISO-3166 alpha-2 code of the operator's jurisdiction, if known
+#
+# Every domain listed here is (a) searched with site: queries and (b) classified as
+# "Data broker / people search".
+brokers:
+  - {domain: spokeo.com, name: Spokeo, opt_out_url: "https://www.spokeo.com/optout", country: US}
+  - {domain: whitepages.com, name: Whitepages, opt_out_url: "https://www.whitepages.com/suppression-requests", country: US}
+  - {domain: beenverified.com, name: BeenVerified, opt_out_url: "https://www.beenverified.com/app/optout/search", country: US}
+  - {domain: truepeoplesearch.com, name: TruePeopleSearch, opt_out_url: "https://www.truepeoplesearch.com/removal", country: US}
+  - {domain: fastpeoplesearch.com, name: FastPeopleSearch, opt_out_url: "https://www.fastpeoplesearch.com/removal", country: US}
+  - {domain: radaris.com, name: Radaris, opt_out_url: "https://radaris.com/control/privacy", country: US}
+  - {domain: intelius.com, name: Intelius, opt_out_url: "https://suppression.peopleconnect.us/login", country: US}
+  - {domain: peoplefinders.com, name: PeopleFinders, opt_out_url: "https://www.peoplefinders.com/opt-out", country: US}
+  - {domain: instantcheckmate.com, name: Instant Checkmate, opt_out_url: "https://www.instantcheckmate.com/opt-out/", country: US}
+  - {domain: truthfinder.com, name: TruthFinder, opt_out_url: "https://www.truthfinder.com/opt-out/", country: US}
+  - {domain: thatsthem.com, name: ThatsThem, opt_out_url: "https://thatsthem.com/optout", country: US}
+  - {domain: familytreenow.com, name: FamilyTreeNow, opt_out_url: "https://www.familytreenow.com/optout", country: US}
+  - {domain: nuwber.com, name: Nuwber, opt_out_url: "https://nuwber.com/removal/link", country: US}
+  - {domain: clustrmaps.com, name: ClustrMaps, opt_out_url: "https://clustrmaps.com/bl/opt-out", country: US}
+  - {domain: peekyou.com, name: PeekYou, opt_out_url: "https://www.peekyou.com/about/contact/optout", country: US}
+  - {domain: mylife.com, name: MyLife, opt_out_url: "", country: US}
+  - {domain: ussearch.com, name: US Search, opt_out_url: "", country: US}
+  - {domain: pipl.com, name: Pipl, opt_out_url: "", country: US}
+  - {domain: 192.com, name: 192.com, opt_out_url: "", country: GB}
+  - {domain: rocketreach.co, name: RocketReach, opt_out_url: "", country: US}
+  - {domain: zoominfo.com, name: ZoomInfo, opt_out_url: "", country: US}
+  - {domain: contactout.com, name: ContactOut, opt_out_url: "", country: US}
+  - {domain: signalhire.com, name: SignalHire, opt_out_url: "", country: US}
+  - {domain: lusha.com, name: Lusha, opt_out_url: "", country: IL}
